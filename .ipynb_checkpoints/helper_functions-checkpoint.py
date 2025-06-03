@@ -31,10 +31,6 @@ def get_hourly_weather_data(lat,lon):
     
     # Process first location. Add a for-loop for multiple locations or weather models
     response = responses[0]
-    print(f"Coordinates {response.Latitude()}°N {response.Longitude()}°E")
-    print(f"Elevation {response.Elevation()} m asl")
-    print(f"Timezone {response.Timezone()}{response.TimezoneAbbreviation()}")
-    print(f"Timezone difference to GMT+0 {response.UtcOffsetSeconds()} s")
     
     # Process hourly data. The order of variables needs to be the same as requested.
     hourly = response.Hourly()
@@ -58,8 +54,8 @@ def get_hourly_weather_data(lat,lon):
     hourly_evapotranspiration = hourly.Variables(17).ValuesAsNumpy()
     
     hourly_data = {"date": pd.date_range(
-    	start = pd.to_datetime(hourly.Time(), unit = "s", utc = True),
-    	end = pd.to_datetime(hourly.TimeEnd(), unit = "s", utc = True),
+    	start = pd.to_datetime(hourly.Time(), unit = "s"),
+    	end = pd.to_datetime(hourly.TimeEnd(), unit = "s"),
     	freq = pd.Timedelta(seconds = hourly.Interval()),
     	inclusive = "left"
     )}
@@ -100,9 +96,10 @@ def get_hourly_aqi_data(lat,lon):
     # The order of variables in hourly or daily is important to assign them correctly below
     url = "https://air-quality-api.open-meteo.com/v1/air-quality"
     params = {
-    	"latitude": 52.52,
-    	"longitude": 13.41,
+    	"latitude": lat,
+    	"longitude": lon,
     	"hourly": ["pm10", "pm2_5", "carbon_monoxide", "carbon_dioxide", "nitrogen_dioxide", "sulphur_dioxide", "ozone", "uv_index", "ammonia", "methane", "us_aqi", "us_aqi_pm2_5", "us_aqi_pm10", "us_aqi_nitrogen_dioxide", "us_aqi_carbon_monoxide", "us_aqi_ozone", "us_aqi_sulphur_dioxide"],
+        "timezone": "auto",
     	"start_date": "2023-01-01",
     	"end_date": "2025-05-12"
     }
@@ -110,10 +107,6 @@ def get_hourly_aqi_data(lat,lon):
     
     # Process first location. Add a for-loop for multiple locations or weather models
     response = responses[0]
-    print(f"Coordinates {response.Latitude()}°N {response.Longitude()}°E")
-    print(f"Elevation {response.Elevation()} m asl")
-    print(f"Timezone {response.Timezone()}{response.TimezoneAbbreviation()}")
-    print(f"Timezone difference to GMT+0 {response.UtcOffsetSeconds()} s")
     
     # Process hourly data. The order of variables needs to be the same as requested.
     hourly = response.Hourly()
@@ -136,8 +129,8 @@ def get_hourly_aqi_data(lat,lon):
     hourly_us_aqi_sulphur_dioxide = hourly.Variables(16).ValuesAsNumpy()
     
     hourly_data = {"date": pd.date_range(
-    	start = pd.to_datetime(hourly.Time(), unit = "s", utc = True),
-    	end = pd.to_datetime(hourly.TimeEnd(), unit = "s", utc = True),
+    	start = pd.to_datetime(hourly.Time(), unit = "s"),
+    	end = pd.to_datetime(hourly.TimeEnd(), unit = "s"),
     	freq = pd.Timedelta(seconds = hourly.Interval()),
     	inclusive = "left"
     )}
@@ -167,15 +160,20 @@ def get_hourly_aqi_data(lat,lon):
 
 
 def hourly_to_daily(df):
-    hourly_df['date'] = pd.to_datetime(hourly_df['date'])
-    hourly_df.set_index('date',inplace=True)
+    df['date'] = pd.to_datetime(df['date'])
+    df.set_index('date',inplace=True)
+
+    numeric_cols = df.select_dtypes(include='number').columns
+    df_numeric = df[numeric_cols]
     
     agg_fcts = ['min','max','mean']
     
-    daily_df = hourly_df.resample('D').agg(agg_fcts)
-    
+    daily_df = df_numeric.resample('D').agg(agg_fcts)
     daily_df.columns = ['_'.join([col,stat]) for col, stat in daily_df.columns]
-    daily_df.reset_index(inplace=True)
+    
+    nonnum_cols = df.drop(columns=numeric_cols).resample('D').first()
+
+    daily_df = pd.concat([daily_df, nonnum_cols], axis=1).reset_index()
     return daily_df
 
 def get_city_state(lat,lon):
