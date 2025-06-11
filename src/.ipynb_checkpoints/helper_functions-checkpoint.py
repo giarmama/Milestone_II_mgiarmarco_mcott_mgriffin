@@ -150,7 +150,9 @@ def get_aqi_data(state,lat,lon,start="2022-12-31",stop="2025-06-01"):
     bins = [0, 50, 100, 150, 200, 300, 500]
     labels = [1, 2, 3, 4, 5, 6]  # Increasing severity
     for col in ['us_aqi_min', 'us_aqi_max', 'us_aqi_mean']:
-        df_daily[col] = pd.cut(df_daily[col], bins=bins, labels=labels, right=True).astype('int')
+        bin_col = f"{col}_bin"
+        df_daily[bin_col] = pd.cut(df_daily[col], bins=bins, labels=labels, right=True).astype('int')
+        df_daily[f'{bin_col}_lag'] = df_daily[bin_col].shift(1)
         df_daily[f'{col}_lag'] = df_daily[col].shift(1)
     df_daily = df_daily.iloc[1:]
     return df_daily
