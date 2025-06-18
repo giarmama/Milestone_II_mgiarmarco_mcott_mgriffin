@@ -1,2 +1,5 @@
 src/data/final.csv
 src/data/final_cleaned.csv
+src/data/CHI_trunc.csv
+src/data/NYC_trunc.csv
+src/data/truncated.zip
