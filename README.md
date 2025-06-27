@@ -10,7 +10,7 @@ This project investigates the relationship between air quality and public transp
 
 Install the following Python packages:
 
-*pip install pandas numpy scikit-learn xgboost shap matplotlib seaborn requests_cache geopy openmeteo-requests holidays*
+<code>*pip install pandas numpy scikit-learn xgboost shap matplotlib seaborn requests_cache geopy openmeteo-requests holidays*</code>
 
 ##  Data Sources
 
