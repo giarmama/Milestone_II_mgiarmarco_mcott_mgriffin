@@ -10,7 +10,7 @@ This project investigates the relationship between air quality and public transp
 
 Install the following Python packages:
 
-*pip install pandas numpy scikit-learn xgboost shap matplotlib seaborn requests_cache geopy openmeteo-requests*
+*pip install pandas numpy scikit-learn xgboost shap matplotlib seaborn requests_cache geopy openmeteo-requests holidays*
 
 ##  Data Sources
 
@@ -23,14 +23,14 @@ Install the following Python packages:
   [NYC MTA Ridership](https://data.ny.gov)
 
 ## 👥 Team Members
-- **Mark Griffin** – 
+- **Mark Griffin**
   - Data Acquisition (Public Transportation)
   - Unsupervised Learning (DBSCAN, Agglomerative Clustering)
   - Supervised Learning (Lasso)
 - **Matt Cott** 
   - Supervised Learning (XGBoost)
   - SHAP
-  - Failure analysis  
+  - Failure Analysis  
   - Feature Ablation
 - **Michael Giarmarco** 
   - Data Acquisition (Air Quality, Weather)
