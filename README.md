@@ -22,7 +22,7 @@ Install the following Python packages:
   [Chicago CTA Ridership](https://data.cityofchicago.org)  
   [NYC MTA Ridership](https://data.ny.gov)
 
-## 👥 Team Members
+## Team Members
 - **Mark Griffin**
   - Data Acquisition (Public Transportation)
   - Unsupervised Learning (DBSCAN, Agglomerative Clustering)
