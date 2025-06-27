@@ -10,7 +10,7 @@ This project investigates the relationship between air quality and public transp
 
 Install the following Python packages:
 
-*pip install pandas numpy scikit-learn xgboost shap matplotlib seaborn requests_cache geopy openmeteo-requests*
+*pip install pandas numpy scikit-learn xgboost shap matplotlib seaborn requests_cache geopy openmeteo-requests holidays*
 
 ##  Data Sources
 
@@ -30,7 +30,7 @@ Install the following Python packages:
 - **Matt Cott** 
   - Supervised Learning (XGBoost)
   - SHAP
-  - Failure analysis  
+  - Failure Analysis  
   - Feature Ablation
 - **Michael Giarmarco** 
   - Data Acquisition (Air Quality, Weather)
