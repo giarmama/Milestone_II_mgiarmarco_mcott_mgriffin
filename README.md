@@ -23,7 +23,7 @@ Install the following Python packages:
   [NYC MTA Ridership](https://data.ny.gov)
 
 ## 👥 Team Members
-- **Mark Griffin** – 
+- **Mark Griffin**
   - Data Acquisition (Public Transportation)
   - Unsupervised Learning (DBSCAN, Agglomerative Clustering)
   - Supervised Learning (Lasso)
